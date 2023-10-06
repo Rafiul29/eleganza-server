@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
-import { speciaistType } from "./speciaList.type";
+
 import { bookingType } from "./booking.type";
+import { specialistType } from "./specialist.type";
 
 export type beautyPackageType={
   title:string;
@@ -8,7 +9,7 @@ export type beautyPackageType={
   category:string;
   images:string[];
   price:number;
-  specialist:speciaistType[];
+  specialist:specialistType[];
   bookings:bookingType[];
 } & Document
 
