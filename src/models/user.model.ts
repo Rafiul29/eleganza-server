@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import { userType } from "../types/user.type";
 import validator from "validator";
-import brcypt from "bcrypt"
+import bcrypt from 'bcrypt';
 import { userModelInterface } from "../interfaces/user.interface";
+
 const userSchema = new mongoose.Schema<userType>({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
@@ -43,9 +44,11 @@ const userSchema = new mongoose.Schema<userType>({
 
 
 userSchema.statics.register = async function (name, email, password, photoUrl, address, phoneNumber): Promise<userType> {
+
   if (!name || !email || !password || !photoUrl) {
-    throw new Error("Must fill name, email and photoUrl");
+    throw new Error("Must fill name, email,password and photoUrl");
   }
+
   const existingUser = await this.findOne({ email })
 
   if (existingUser) {
@@ -57,35 +60,36 @@ userSchema.statics.register = async function (name, email, password, photoUrl, a
   if (!validator.isStrongPassword(password)) {
     throw new Error("Password must 8+ charm contains uppercase lowercase, number and special char");
   }
-  const salt = await brcypt.genSalt(10);
-  const hash = brcypt.hash(password, salt);
+
+  const salt = await bcrypt.genSalt(10);
+  const hash =await bcrypt.hash(password, salt);
   const user = await this.create({
     name, email, password: hash, photoUrl, address, phoneNumber
   })
   return user;
+  
 }
 
-userSchema.statics.login=async function(email,password):Promise<userType>{
-    if(!email || !password){
-      throw new Error("Must fill email and password");
-    }
+userSchema.statics.login = async function (email, password): Promise<userType> {
+  if (!email || !password) {
+    throw new Error("Must fill email and password");
+  }
 
-    const user=await this.findOne({email});
+  const user = await this.findOne({ email });
 
-    if(!user){
-      throw new Error("Incorrect email or password");
-    }
+  if (!user) {
+    throw new Error("Incorrect email or password");
+  }
 
-    const match=await brcypt.compare(password,user.password);
-    if(!match){
-      throw new Error("Incorrect email or password");
-    }
+  const match = await bcrypt.compare(password, user.password);
 
-      return user;
+  if (!match) {
+    throw new Error("Incorrect email or password");
+  }
+
+  return user;
 }
 
-
-const UserModel = mongoose.model<userType,userModelInterface>('User', userSchema)
-
+const UserModel = mongoose.model<userType, userModelInterface>('User', userSchema)
 
 export default UserModel;

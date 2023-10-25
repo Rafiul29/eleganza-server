@@ -1,4 +1,4 @@
-import express, { Application,Request,Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors"
 import morgan from "morgan";
 import mongoSenitize from "express-mongo-sanitize"
@@ -12,7 +12,9 @@ import beautyPackageRouter from "./routes/beautypackages.route";
 import specialistRouter from "./routes/specialist.route";
 import bookingRouter from "./routes/booking.route";
 
+
 class App {
+
   private app: Application
 
   constructor() {
@@ -30,31 +32,30 @@ class App {
     this.app.use(mongoSenitize())
     this.app.use(helmet())
     this.app.use(hpp())
-
   }
 
   private setUpRoutes(): void {
-    this.app.get("/",(req:Request,res:Response)=>{
-        res.status(200).json({message:"welcome to mimosa server"})
+    this.app.get("/", (req: Request, res: Response) => {
+      res.status(200).json({ message: "welcome to mimosa server" })
     })
 
     // bypasses api
-    this.app.use('/api/auth',authRouter);
-    this.app.use("/api/users",userRouter);
-    this.app.use("/api/beauty_packages",beautyPackageRouter);
-    this.app.use("/api/specialists",specialistRouter)
-    this.app.use("/api/booking",bookingRouter);
+    this.app.use('/api/auth', authRouter);
+    this.app.use("/api/users", userRouter);
+    this.app.use("/api/beauty_packages", beautyPackageRouter);
+    this.app.use("/api/specialists", specialistRouter)
+    this.app.use("/api/booking", bookingRouter);
   }
 
-  private connectionToDatabase(){
-    const URI=process.env.MONGO_URI as string
+  private connectionToDatabase() {
+    const URI = process.env.MONGO_URI as string
 
-    mongoose.connect(URI).then(()=>{
+    mongoose.connect(URI).then(() => {
       const PORT = process.env.PORT as string || 4000
-      this.app.listen(PORT,()=>{
+      this.app.listen(PORT, () => {
         console.log(`server is running on port : ${PORT}`)
       })
-    }).catch((error)=>{
+    }).catch((error) => {
       console.log(`Mongodb Connection error ${error.message}`)
     })
   }
