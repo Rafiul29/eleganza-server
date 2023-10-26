@@ -12,8 +12,6 @@ const bookingSchema= new mongoose.Schema<bookingType>({
         type:mongoose.Schema.Types.ObjectId,
         ref:"BeautyPackage",
       }
-    
-   
 },{timestamps:true})
 
 const bookingModel=mongoose.model<bookingType>('Booking', bookingSchema)
