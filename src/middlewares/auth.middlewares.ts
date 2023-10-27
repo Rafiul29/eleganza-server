@@ -20,6 +20,7 @@ export default class AuthMiddleware {
   constructor() { }
 
   public async isAuthenticated(req: Request, res: Response, next: NextFunction): Promise<void> {
+    
     const token=req?.headers?.authorization?.split(" ")[1] 
     if(!token){
       res.status(401).json({
