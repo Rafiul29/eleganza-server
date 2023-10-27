@@ -33,6 +33,6 @@ const specialistSchema= new mongoose.Schema<specialistType>({
    
 },{timestamps:true})
 
-const specialistModel=mongoose.model<specialistType>('Specialist' ,specialistSchema)
+const SpecialistModel=mongoose.model<specialistType>('Specialist' ,specialistSchema)
 
-export default specialistModel;
+export default SpecialistModel;

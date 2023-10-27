@@ -14,6 +14,6 @@ const bookingSchema= new mongoose.Schema<bookingType>({
       }
 },{timestamps:true})
 
-const bookingModel=mongoose.model<bookingType>('Booking', bookingSchema)
+const BookingModel=mongoose.model<bookingType>('Booking', bookingSchema)
 
-export default bookingModel;
+export default BookingModel;
