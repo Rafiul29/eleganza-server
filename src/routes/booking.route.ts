@@ -15,7 +15,7 @@ bookingRouter.post("/create/:bid",authInstance.isAuthenticated,bookingInstance.c
 // bookingRouter.get("/read/:uid",authInstance.isAuthenticated);
 
 // delete a booking
-bookingRouter.delete("/bid",authInstance.isAuthenticated,bookingInstance.deleteABooking);
+bookingRouter.delete("/:bid",authInstance.isAuthenticated,bookingInstance.deleteABooking);
 
 
 // get all bookings

@@ -25,7 +25,7 @@ const beautyPackageSchema= new mongoose.Schema<beautyPackageType>({
       type:Number,
       required:true,
     },
-    specialist:[
+    specialists:[
       {
         type:mongoose.Schema.Types.ObjectId,
         ref:"Specialist",

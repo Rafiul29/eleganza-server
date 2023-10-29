@@ -23,6 +23,7 @@ export default class BookingController {
       }
 
       const user=await UserModel.findById(req.user?._id).populate('bookings');
+
         // already booked
         const alreadyBooked=user?.bookings.find((booking:bookingType)=>bid===booking.beautyPackage._id.toString());
 
@@ -36,6 +37,7 @@ export default class BookingController {
           beautyPackage: bid,
           user: req.user?._id
         })
+
         await BeautyPackageModel.findByIdAndUpdate(bid, {
           $addToSet: {
             bookings: booking._id
@@ -54,6 +56,7 @@ export default class BookingController {
       await handleError(error, res);
     }
   }
+  
 // delete booking
   public async deleteABooking(req: Request, res: Response): Promise<void> {
     try {
@@ -65,18 +68,29 @@ export default class BookingController {
         return
       }
 
+      const existedBooking=await BookingModel.findById(bid);
+
+      if(!existedBooking){
+        res.status(403).json({message:"Booking doesn't exist"})
+        return;
+      }
+
       const user=await UserModel.findById(req.user?._id)
 
       const matchBooking=user?.bookings.find((booking:bookingType)=>bid===booking._id.toString());
 
       if(!matchBooking){
         res.status(403).json({message:"Booking doesn't exist"})
+        return
       }
-
+    
       await Promise.resolve().then(async () => {
        const booking=await BookingModel.findByIdAndDelete(bid);
+
        res.status(200).json(booking);
       })
+      
+
 
     } catch (error: unknown) {
       await handleError(error, res);
@@ -87,7 +101,7 @@ export default class BookingController {
   public async getAllBookings(req: Request, res: Response): Promise<void> {
     try {
       await Promise.resolve().then(async () => {
-       const bookings=await BookingModel.find({});
+       const bookings=await BookingModel.find({}).populate("user beautyPackage");
        res.status(200).json(bookings);
       })
       

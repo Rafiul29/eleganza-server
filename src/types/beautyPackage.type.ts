@@ -9,7 +9,7 @@ export type beautyPackageType={
   category:string;
   images:string[];
   price:number;
-  specialist:specialistType[];
+  specialists:specialistType[];
   bookings:bookingType[];
 } & Document
 

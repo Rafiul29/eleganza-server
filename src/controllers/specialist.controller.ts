@@ -3,6 +3,7 @@ import { handleError } from "../errors/handle.error";
 
 import mongoose from "mongoose";
 import SpecialistModel from "../models/specialist.mode";
+import BeautyPackageModel from "../models/beautyPackage.model";
 
 export default class SpecialistController {
   constructor() { }
@@ -45,12 +46,20 @@ export default class SpecialistController {
   public async createSpecialist(req: Request, res: Response): Promise<void> {
 
     try {
+  
       const { name,
         designation,
         bio,
         photoUrl,
         dateOfBirth,
       } = req.body;
+
+      const {bid}=req.params;
+
+      if (!mongoose.Types.ObjectId.isValid(bid)) {
+        res.status(404).json({ message: "Beauty package not found" });
+        return
+      }
 
       await Promise.resolve().then(async () => {
         const specialist = await SpecialistModel.create({
@@ -60,6 +69,12 @@ export default class SpecialistController {
           photoUrl,
           dateOfBirth,
         });
+
+        await BeautyPackageModel.findByIdAndUpdate(bid,{
+          $addToSet:{
+            specialists:specialist._id
+          }
+        })
 
         res.status(200).json(specialist);
       })
@@ -80,6 +95,7 @@ export default class SpecialistController {
         dateOfBirth,
       } = req.body;
       const { sid } = req.params;
+    
       if (!mongoose.Types.ObjectId.isValid(sid)) {
         res.status(404).json({ message: "specialist not found" });
         return
@@ -88,10 +104,10 @@ export default class SpecialistController {
       await Promise.resolve().then(async () => {
         const specialist = await SpecialistModel.findByIdAndUpdate(sid, {
           name,
-          designation,
-          bio,
-          photoUrl,
-          dateOfBirth
+        designation,
+        bio,
+        photoUrl,
+        dateOfBirth,
         }, { new: true });
 
         res.status(200).json(specialist);

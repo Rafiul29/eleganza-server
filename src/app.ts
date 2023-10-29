@@ -44,7 +44,7 @@ class App {
     this.app.use("/api/users", userRouter);
     this.app.use("/api/beauty_packages", beautyPackageRouter);
     this.app.use("/api/specialists", specialistRouter)
-    this.app.use("/api/booking", bookingRouter);
+    this.app.use("/api/bookings", bookingRouter);
   }
 
   private connectionToDatabase() {

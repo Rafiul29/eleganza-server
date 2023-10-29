@@ -13,8 +13,8 @@ specialistRouter.get("/",specialistInstance.getAllSpecialist);
 // get a specialist 
 specialistRouter.get("/:sid",specialistInstance.getSpecialist);
 
-// create a  specialist
-specialistRouter.post("/",authInstance.isAuthenticated,authInstance.isAdmin,specialistInstance.createSpecialist);
+// create a specialist
+specialistRouter.post("/:bid",authInstance.isAuthenticated,authInstance.isAdmin,specialistInstance.createSpecialist);
 
 // update a specialist
 specialistRouter.put("/:sid",authInstance.isAuthenticated,authInstance.isAdmin,specialistInstance.updateSpecialist);
